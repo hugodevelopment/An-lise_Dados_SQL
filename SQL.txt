@@ -1,0 +1,149 @@
+hugoBricks24$
+
+
+select * from notebook_csv
+
+
+create view view_notebooks_csv
+as select *,
+(latest_price *0.063) as latest_price_real
+(old_price *0.063) as old_price_real
+from notebook_csv
+
+
+alter view_notebooks
+as select *,
+(latest_price *0.063) as latest_price_real
+(old_price *0.063) as old_price_real
+from notebook_csv
+
+
+select brand,
+avg(latest_price) as media_price
+from view_notebooks
+group by brand
+order by 2 ou brand desc
+
+
+**Projeto Análise de Preços Notebooks em SQL**
+
+Este pequeno projeto tem como intuito o estudo da análise de dados em SQL, utilizando a base de dados do Kaggle:
+
+%md
+**<h3> Análise Descritiva SQL </h3>**
+
+
+select 
+case when brand = "lenovo" then "Lenovo"
+     else brand
+end as brand,
+
+avg(latest_price_real) as media_price
+from view_notebook_csv
+
+group by 
+case when brand = "lenovo" then "Lenovo"
+     else brand
+end
+order by media_price desc
+
+
+alter view view_notebook_csv
+as select *,
+(latest_price *0.063) as latest_price_real,
+(old_price *0.063) as old_price_real
+from notebook_csv
+
+
+select 
+case when brand = "lenovo" then "Lenovo"
+     else brand
+end as brand,
+
+avg(latest_price_real) as media_price
+from view_notebook_csv
+
+group by 
+case when brand = "lenovo" then "Lenovo"
+     else brand
+end
+order by media_price desc
+
+SELECT brand, AVG(latest_price_real) as media_price
+FROM (
+  SELECT 
+    CASE 
+      WHEN brand = 'lenovo' THEN 'Lenovo'
+      ELSE brand
+    END as brand,
+    latest_price_real
+  FROM view_notebook_csv
+) AS subquery
+GROUP BY brand
+ORDER BY media_price DESC;
+
+
+select ram_type,
+avg(latest_price_real) as media_price_ram
+from view_notebook_csv
+group by ram_type
+order by media_price_ram desc
+
+SELECT 
+  CASE 
+    WHEN ram_type = "LPDDR3" THEN "DDR3"
+    WHEN ram_type IN ("LPDDR4", "LPDDR4X") THEN "DDR4"
+    ELSE ram_type
+  END as ram_type,
+  AVG(latest_price_real) as media_price_ram
+FROM view_notebook_csv
+GROUP BY ram_type
+ORDER BY media_price_ram DESC;
+
+
+SELECT
+  CASE
+    WHEN ram_type IN ("LPDDR3", "LPDDR4", "LPDDR4X") THEN
+      CASE
+        WHEN ram_type = "LPDDR3" THEN "DDR3"
+        ELSE "DDR4"
+      END
+    ELSE ram_type
+  END AS ram_type,
+  AVG(latest_price_real) AS media_price_ram
+FROM view_notebook_csv
+
+
+GROUP BY CASE
+    WHEN ram_type IN ("LPDDR3", "LPDDR4", "LPDDR4X") THEN
+      CASE
+        WHEN ram_type = "LPDDR3" THEN "DDR3"
+        ELSE "DDR4"
+      END
+    ELSE ram_type
+  END 
+
+ORDER BY media_price_ram DESC;
+
+
+SELECT
+  CASE
+    WHEN ram_type IN ("LPDDR3", "LPDDR4", "LPDDR4X") THEN
+      CASE
+        WHEN ram_type = "LPDDR3" THEN "DDR3"
+        ELSE "DDR4"
+      END
+    ELSE ram_type
+  END AS ram_type,
+  (COUNT(*) / (SELECT COUNT(*) FROM view_notebook_csv)) * 100 AS percentage
+FROM view_notebook_csv
+
+GROUP BY Case
+    WHEN ram_type IN ("LPDDR3", "LPDDR4", "LPDDR4X") THEN
+      CASE
+        WHEN ram_type = "LPDDR3" THEN "DDR3"
+        ELSE "DDR4"
+      END
+        ELSE ram_type
+      END
+ORDER BY percentage DESC;
