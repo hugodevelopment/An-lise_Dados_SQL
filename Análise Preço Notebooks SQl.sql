@@ -243,6 +243,7 @@ SELECT
       END
     ELSE ram_type
   END AS ram_type,
+  -- Aqui calculamos a procentagem das memorias em relação a base toda
   (COUNT(*) / (SELECT COUNT(*) FROM view_notebook_csv)) * 100 AS percentage
 FROM view_notebook_csv
 
@@ -256,3 +257,20 @@ GROUP BY Case
       END
 ORDER BY percentage DESC;
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC **<h3>Análise Final</h3>**
+-- MAGIC
+-- MAGIC Em relação a analise das mémorias podemos realizar algumas inferencias:
+-- MAGIC
+-- MAGIC A **memória DDR5 tem a maior média de preços**, isso indica que, em geral, as memórias DDR5 são mais caras do que as DDR4.
+-- MAGIC
+-- MAGIC No entanto, a memória DDR4 é a mais vendida e tem a maior participação na base de dados. Isso pode ser devido a vários fatores. Por exemplo, a **DDR4 pode ser mais popular** porque é mais antiga e mais compatível com dispositivos existentes. Além disso, mesmo que a DDR5 tenha um desempenho superior, o custo mais alto pode torná-la menos atraente para alguns consumidores. Portanto, embora a DDR5 seja mais cara, a DDR4 ainda domina o mercado devido à sua acessibilidade e compatibilidade.
+-- MAGIC
+-- MAGIC Mesmo que a memória DDR5 represente apenas **0.89% da base de dados**, o fato de ter a maior média de preço pode indicar que ela é mais lucrativa para a empresa.
+-- MAGIC
+-- MAGIC Isso sugere que, embora a empresa venda menos unidades de memória DDR5, a **margem de lucro por unidade** pode ser maior devido ao seu preço médio mais alto. Isso é especialmente verdadeiro se o custo de produção da memória DDR5 não for significativamente maior do que o da **DDR4**.
+-- MAGIC
+-- MAGIC No entanto, é importante lembrar que a lucratividade também pode depender de outros fatores, como o custo de produção, a demanda do mercado e a estratégia de preços da empresa
